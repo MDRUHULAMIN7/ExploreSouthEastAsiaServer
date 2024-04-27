@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 
 const port = process.env.PORT || 5000;
@@ -58,7 +58,28 @@ app.post('/spots', async(req,res)=>{
 })
 
 app.put('/mylist/:id',async(req,res)=>{
-  
+  const id = req.params.id;
+  const filter ={_id:new ObjectId(id)}
+  const options ={upsert:true};
+  const updateSpot = req.body;
+
+
+  const spot ={
+    $set:{
+       image:updateSpot.image,
+       touristspotname:updateSpot.touristspotname,
+       countryname:updateSpot.countryname,
+       location:updateSpot.location,
+       averagecost:updateSpot.averagecost,
+       seosanlity:updateSpot.seosanlity,
+       traveltime:updateSpot.traveltime,
+       totalvisitor:updateSpot.totalvisitor,
+       description:updateSpot.description
+
+    }
+  }
+  const result = await updateSpot.updateOne(filter,mylist,options);
+  res.send(result)
 })
 
     await client.db("admin").command({ ping: 1 });
