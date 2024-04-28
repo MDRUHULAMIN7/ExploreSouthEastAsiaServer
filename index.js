@@ -78,7 +78,7 @@ app.put('/mylist/:id',async(req,res)=>{
 
     }
   }
-  const result = await updateSpot.updateOne(filter,mylist,options);
+  const result = await spotsCollection.updateOne(filter,spot,options);
   res.send(result)
 })
 
